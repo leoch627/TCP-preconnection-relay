@@ -510,7 +510,6 @@ instances=()
 for conf in "${confs[@]}"; do
     name="$(basename "$conf")"
     [[ "$name" == "relays.conf" ]] && continue
-    [[ "$name" != *.conf ]] && continue
     instances+=("${name%.conf}")
 done
 
