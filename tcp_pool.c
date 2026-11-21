@@ -1095,8 +1095,6 @@ int main() {
                         log_enqueue("Timeout(%ds): Local->Remote", cfg_idle_timeout);
                         log_enqueue("Timeout(%ds): Remote->Local", cfg_idle_timeout);
                         conn_close(cur);
-                    } else if (!cur->closed) {
-                        conn_close(cur);
                     }
 
                     if (prev) prev->next = next;
