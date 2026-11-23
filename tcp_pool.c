@@ -828,10 +828,7 @@ int main() {
             if (tagp == NULL) {
                 while (1) {
                     int cli = accept4(listen_fd, NULL, NULL, SOCK_NONBLOCK);
-                    if (cli < 0) {
-                        if (errno == EAGAIN || errno == EWOULDBLOCK) break;
-                        break;
-                    }
+                    if (cli < 0) break;
                     set_tcp_socket_options(cli);
 
                     int rem = -1;
@@ -916,10 +913,7 @@ int main() {
                     socklen_t clen = sizeof(cli);
 
                     ssize_t n = recvfrom(udp_listen_fd, buf, sizeof(buf), 0, (struct sockaddr*)&cli, &clen);
-                    if (n < 0) {
-                        if (errno == EAGAIN || errno == EWOULDBLOCK) break;
-                        break;
-                    }
+                    if (n < 0) break;
 
                     UdpAssoc *u = udp_get_or_create(&cli, clen, now, epfd);
                     if (!u) continue;
@@ -941,10 +935,7 @@ int main() {
                 while (1) {
                     uint8_t buf[65535];
                     ssize_t n = recv(u->up_fd, buf, sizeof(buf), 0);
-                    if (n < 0) {
-                        if (errno == EAGAIN || errno == EWOULDBLOCK) break;
-                        break;
-                    }
+                    if (n < 0) break;
 
                     ssize_t s = sendto(udp_listen_fd, buf, (size_t)n, MSG_DONTWAIT,
                                        (struct sockaddr*)&u->cli, u->cli_len);
