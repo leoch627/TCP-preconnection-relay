@@ -93,8 +93,6 @@ static int log_queue_len = 0;
 static int log_dropped = 0;
 
 static void log_enqueue_v(const char *fmt, va_list ap) {//产生日志
-    if (!LOG_ENABLE) return;
-
     va_list ap2;
     va_copy(ap2, ap);
     int n = vsnprintf(NULL, 0, fmt, ap2);
@@ -584,7 +582,6 @@ static pump_status_t pump(int src_fd, int dst_fd, int pipe_in, int pipe_out,//�
         if (n > 0) {
             *pipe_len += (size_t)n;
             *last_ts = now_ms;
-            if (*pipe_len >= cfg_splice_chunk) break;
         } else if (n == 0) {
             got_eof = true;
             break;  //收到EOF，但先不返回，继续把pipe里的数据刷到目标
