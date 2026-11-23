@@ -930,7 +930,6 @@ int main() {
             //UDP assoc
             if ((pv & TAG_MASK2) == TAG_UDP_ASSOC) {
                 UdpAssoc *u = (UdpAssoc*)(pv & ~TAG_MASK2);
-                if (!u) continue;
 
                 while (1) {
                     uint8_t buf[65535];
@@ -947,7 +946,7 @@ int main() {
 
             //TCP conn
             Conn *c = (Conn*)(pv & ~TAG_CONN_SIDE);
-            if (!c || c->closed) continue;
+            if (c->closed) continue;
             bool is_remote_fd = (pv & TAG_CONN_SIDE);
             if (is_remote_fd && c->connecting) {
                 if (events[i].events & (EPOLLOUT | EPOLLERR | EPOLLHUP | EPOLLRDHUP)) {//这里保险还是判断完整一点
